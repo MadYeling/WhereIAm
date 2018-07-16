@@ -1,0 +1,6 @@
+
+	This mod shows the biome you are in
+	Does not support mod biome temporarily
+
+	这个模组可以告诉你所处的环境
+	暂时不支持模组环境

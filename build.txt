@@ -1,0 +1,8 @@
+author = 叶凌
+version = 0.1
+displayName = Where I Am
+homepage = about:blank
+hideCode = false
+hideResources = false
+includeSource = true
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Properties\*, *.sln

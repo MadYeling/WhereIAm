@@ -1,6 +1,21 @@
 
-	This mod shows the biome you are in
+	This mod shows the biome you are in, current time(day or night), player position (Take the top left corner of the map as the original point) and FPS
 	Does not support mod biome temporarily
 
-	这个模组可以告诉你所处的环境
+	Future update: Add a UI allows players to open or close certain displays freely.
+
+	这个模组可以告诉你所处的环境, 当前时间(白天,晚上), 人物坐标 (以地图左上角为原点) 以及游戏帧数
 	暂时不支持模组环境
+
+	未来更新期望: 添加一个UI,玩家可自由开启或关闭某些显示
+
+
+	更新日志:
+
+	v0.3
+	-Add FPS at the lower left corner
+	-在游戏左下角添加帧数
+
+	v0.2
+	-Add player position
+	-添加人物坐标

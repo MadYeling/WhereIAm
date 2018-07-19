@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -12,6 +11,10 @@ namespace WhereIAm
     public class WhereIAm : Mod
     {
         public static bool hasLeveled = false;
+        private string biome = "UNKNOWN ERR";
+        private string time = "UNKNOWN ERR";
+        private string position = "X: " + Main.player[Main.myPlayer].position.X + " Y: " + Main.player[Main.myPlayer].position.Y;
+        private string fps = "FPS:" + Main.frameRate;
 
         public override void Load()
         {
@@ -22,25 +25,30 @@ namespace WhereIAm
             SetTranslation();
             //Title();
         }
+
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
             if (!hasLeveled)
             {
                 if (!Main.gameMenu && Main.player[Main.myPlayer].active)
                 {
-                    string biome = CheckBiome();
-                    string time = CheckTime();
-                    Main.spriteBatch.DrawString(Main.fontMouseText, biome, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(biome).X * 0.75f) - 2, 30), Color.White, 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
-                    Main.spriteBatch.DrawString(Main.fontMouseText, time, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(time).X * 0.75f) - 2, 60), Color.White, 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
+                    biome = CheckBiome();
+                    time = CheckTime();
+
+                    Utils.DrawBorderString(Main.spriteBatch, biome, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(biome).X * 0.75f) - 2, 30), Color.White, 1.5f);
+                    Utils.DrawBorderString(Main.spriteBatch, time, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(time).X * 0.75f) - 2, 60), Color.White, 1.5f);
+                    Utils.DrawBorderString(Main.spriteBatch, position, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(position).X * 0.75f) - 2, 90), Color.White, 1.5f);
 
                     //Debug Messages
-                    /*
-                    string test = "Palyer Position: " + Main.player[Main.myPlayer].position;
-                    string test2 = "a: ";
-                    Main.spriteBatch.DrawString(Main.fontMouseText, test, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(test).X * 0.75f) - 2, 90), new Color(255, 255, 255), 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
-                    Main.spriteBatch.DrawString(Main.fontMouseText, test2, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(test2).X * 0.75f) - 2, 120), new Color(255, 255, 255), 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
-                    */
+                    ///*
+                    //string test2 = "a: ";
+                    //Main.spriteBatch.DrawString(Main.fontMouseText, test2, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(test2).X * 0.75f) - 2, 120), new Color.White, 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
+                    //*/
                 }
+            }
+            if (!Main.gameMenu && Main.player[Main.myPlayer].active)
+            {
+                Utils.DrawBorderString(Main.spriteBatch, fps, new Vector2(20, Main.screenHeight - 30), Color.White, 1.5f);
             }
         }
 
@@ -403,9 +411,9 @@ namespace WhereIAm
             text.AddTranslation(GameCulture.Chinese, "未知");
 
             text = CreateTranslation("check");
-            text.SetDefault("Detected Leveled, The function of Where I Am has been automatically disabled");
+            text.SetDefault("Detected Leveled, Part of the function of Where I Am has been automatically disabled");
             AddTranslation(text);
-            text.AddTranslation(GameCulture.Chinese, "检测到Leveled, Where I Am功能已自动关闭");
+            text.AddTranslation(GameCulture.Chinese, "检测到Leveled, Where I Am部分功能已自动关闭");
         }
     }
 }

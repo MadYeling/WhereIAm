@@ -12,7 +12,7 @@ namespace WhereIAm
             if (WhereIAm.hasLeveled)
             {
                 string check = Language.GetTextValue("Mods.WhereIAm.check");
-                Main.NewText("检测到Leveled, Where I Am功能已自动关闭", Color.Cyan);
+                Main.NewText(check, Color.Cyan);
             }
         }
     }

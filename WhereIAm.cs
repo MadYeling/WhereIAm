@@ -1,55 +1,88 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace WhereIAm
 {
     public class WhereIAm : Mod
     {
         public static bool hasLeveled = false;
-        private string biome = "UNKNOWN ERR";
-        private string time = "UNKNOWN ERR";
-        private string position = "UNKNOWN ERR";
-        private string fps = "UNKNOWN ERR";
+        private string biome = "";
+        private string time = "";
+        private string position = "";
+        private string fps = "";
+
+        //For UI
+        internal static ModHotKey openUI;
+        internal FunctionCheck functionCheck;
+        public UserInterface userInterface;
+        internal static WhereIAm instance;
 
         public override void Load()
         {
-            if (ModLoader.GetLoadedMods().Contains("Leveled"))
+            instance = this;
+            openUI = RegisterHotKey("功能开关", "Z");
+
+            //UI
+            if (!Main.dedServ)
             {
-                hasLeveled = true;
+                userInterface = new UserInterface();
+                functionCheck = new FunctionCheck();
+                FunctionCheck.visible = false;
+                userInterface.SetState(functionCheck);
             }
+
             SetTranslation();
             //Title();
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
-            if (!hasLeveled)
-            {
-                if (!Main.gameMenu && Main.player[Main.myPlayer].active)
-                {
-                    biome = CheckBiome();
-                    time = CheckTime();
-                    position = "X: " + Main.player[Main.myPlayer].position.X + " Y: " + Main.player[Main.myPlayer].position.Y;
-
-                    Utils.DrawBorderString(Main.spriteBatch, biome, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(biome).X * 0.75f) - 2, 30), Color.White, 1.5f);
-                    Utils.DrawBorderString(Main.spriteBatch, time, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(time).X * 0.75f) - 2, 60), Color.White, 1.5f);
-                    Utils.DrawBorderString(Main.spriteBatch, position, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(position).X * 0.75f) - 2, 90), Color.White, 1.5f);
-
-                    //Debug Messages
-                    ///*
-                    //string test2 = "a: ";
-                    //Main.spriteBatch.DrawString(Main.fontMouseText, test2, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(test2).X * 0.75f) - 2, 120), new Color.White, 0f, new Vector2(0f, 0f), 1.5f, SpriteEffects.None, 1f);
-                    //*/
-                }
-            }
             if (!Main.gameMenu && Main.player[Main.myPlayer].active)
             {
+                biome = CheckBiome();
+                time = CheckTime();
+                position = "X: " + Main.player[Main.myPlayer].position.X + " Y: " + Main.player[Main.myPlayer].position.Y;
                 fps = "FPS:" + Main.frameRate;
+
+                CheckSet();
+            }
+
+
+            //Draw UI
+            if (FunctionCheck.visible)
+            {
+                userInterface.Update(Main._drawInterfaceGameTime);
+                functionCheck.Draw(Main.spriteBatch);
+            }
+        }
+
+        internal void CheckSet()
+        {
+            int high = 30;
+            if (FunctionCheck.biome)
+            {
+                Utils.DrawBorderString(Main.spriteBatch, biome, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(biome).X * 0.75f) - 2, high), Color.White, 1.5f);
+                high += 30;
+            }
+
+            if (FunctionCheck.timer)
+            {
+                Utils.DrawBorderString(Main.spriteBatch, time, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(time).X * 0.75f) - 2, high), Color.White, 1.5f);
+                high += 30;
+            }
+
+            if (FunctionCheck.playerPos)
+            {
+                Utils.DrawBorderString(Main.spriteBatch, position, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(position).X * 0.75f) - 2, high), Color.White, 1.5f);
+            }
+
+            if (FunctionCheck.showFPS)
+            {
                 Utils.DrawBorderString(Main.spriteBatch, fps, new Vector2(20, Main.screenHeight - 30), Color.White, 1.5f);
             }
         }
@@ -254,168 +287,190 @@ namespace WhereIAm
         {
             ModTranslation text = CreateTranslation("day");
             text.SetDefault("Day");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "白天");
+            AddTranslation(text);
 
             text = CreateTranslation("night");
             text.SetDefault("Night");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "夜晚");
+            AddTranslation(text);
 
             text = CreateTranslation("TowerNebula");
             text.SetDefault("Nebula Pillar");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "星云柱");
+            AddTranslation(text);
 
             text = CreateTranslation("TowerSolar");
             text.SetDefault("Solar Pillar");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "日耀柱");
+            AddTranslation(text);
 
             text = CreateTranslation("TowerStardust");
             text.SetDefault("Stardust Pillar");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "星尘柱");
+            AddTranslation(text);
 
             text = CreateTranslation("TowerVortex");
             text.SetDefault("Vortex Pillar");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "星璇柱");
+            AddTranslation(text);
 
             text = CreateTranslation("meteor");
             text.SetDefault("Meteor");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "陨石");
+            AddTranslation(text);
 
             text = CreateTranslation("glowshroom");
             text.SetDefault("Glowshroom");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "发光蘑菇地");
+            AddTranslation(text);
 
             text = CreateTranslation("underCrimson");
             text.SetDefault("Underground Crimson");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "血腥之地 (地下)");
+            AddTranslation(text);
 
             text = CreateTranslation("crimson");
             text.SetDefault("Crimson");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "血腥之地");
+            AddTranslation(text);
 
             text = CreateTranslation("underCorrupt");
             text.SetDefault("Underground Corruption");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "腐化之地 (地下)");
+            AddTranslation(text);
 
             text = CreateTranslation("corrupt");
             text.SetDefault("Corruption");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "腐化之地");
+            AddTranslation(text);
 
             text = CreateTranslation("hallowedCavern");
             text.SetDefault("Hallowed Cavern");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "神圣之地 (岩石洞穴层)");
+            AddTranslation(text);
 
             text = CreateTranslation("underHallow");
             text.SetDefault("Underground Hallow");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "神圣之地 (地下)");
+            AddTranslation(text);
 
             text = CreateTranslation("hallowedDesert");
             text.SetDefault("Hallowed Desert");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "沙漠 (神圣化)");
+            AddTranslation(text);
 
             text = CreateTranslation("hallow");
             text.SetDefault("Hallow");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "神圣之地");
+            AddTranslation(text);
 
             text = CreateTranslation("ocean");
             text.SetDefault("Ocean");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "海洋");
+            AddTranslation(text);
 
             text = CreateTranslation("underSnow");
             text.SetDefault("Underground Ice");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "地下冰原");
+            AddTranslation(text);
 
             text = CreateTranslation("snow");
             text.SetDefault("Snow");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "雪地");
+            AddTranslation(text);
 
             text = CreateTranslation("underDesert");
             text.SetDefault("Underground Desert");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "沙漠 (地下)");
+            AddTranslation(text);
 
             text = CreateTranslation("desert");
             text.SetDefault("Desert");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "沙漠");
+            AddTranslation(text);
 
             text = CreateTranslation("dungeon");
             text.SetDefault("Dungeon");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "地牢");
+            AddTranslation(text);
 
             text = CreateTranslation("temple");
             text.SetDefault("Lihzahrd Temple");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "丛林神庙");
+            AddTranslation(text);
 
             text = CreateTranslation("underJungle");
             text.SetDefault("Underground Jungle");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "丛林 (地下)");
+            AddTranslation(text);
 
             text = CreateTranslation("jungle");
             text.SetDefault("Jungle");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "丛林");
+            AddTranslation(text);
 
             text = CreateTranslation("underworld");
             text.SetDefault("Underworld");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "地狱");
+            AddTranslation(text);
 
             text = CreateTranslation("cavern");
             text.SetDefault("Cavern");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "岩石洞穴");
+            AddTranslation(text);
 
             text = CreateTranslation("space");
             text.SetDefault("Space");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "太空");
+            AddTranslation(text);
 
             text = CreateTranslation("forest");
             text.SetDefault("Forest");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "森林");
+            AddTranslation(text);
 
             text = CreateTranslation("underground");
             text.SetDefault("Underground");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "地下");
+            AddTranslation(text);
 
             text = CreateTranslation("sky");
             text.SetDefault("Sky");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "天空");
+            AddTranslation(text);
 
             text = CreateTranslation("unknown");
             text.SetDefault("Unknown");
-            AddTranslation(text);
             text.AddTranslation(GameCulture.Chinese, "未知");
-
-            text = CreateTranslation("check");
-            text.SetDefault("Detected Leveled, Part of the function of Where I Am has been automatically disabled");
             AddTranslation(text);
-            text.AddTranslation(GameCulture.Chinese, "检测到Leveled, Where I Am部分功能已自动关闭");
+
+            //Has a bug, requires to reload
+            //text = CreateTranslation("functionToggles");
+            //text.SetDefault("Function Toggles");
+            //text.AddTranslation(GameCulture.Chinese, "功能开关");
+            //AddTranslation(text);
+
+            //Has a bug, can not be translated
+            //text = CreateTranslation("displayBiome");
+            //text.SetDefault("Display Biome");
+            //text.AddTranslation(GameCulture.Chinese, "显示环境");
+            //AddTranslation(text);
+
+            //text = CreateTranslation("displayTime");
+            //text.SetDefault("Display Time");
+            //text.AddTranslation(GameCulture.Chinese, "显示时间");
+            //AddTranslation(text);
+
+            //text = CreateTranslation("displayPosition");
+            //text.SetDefault("Display Position");
+            //text.AddTranslation(GameCulture.Chinese, "显示坐标");
+            //AddTranslation(text);
+
+            //text = CreateTranslation("displayFPS");
+            //text.SetDefault("Display FPS");
+            //text.AddTranslation(GameCulture.Chinese, "显示帧数");
+            //AddTranslation(text);
         }
     }
 }

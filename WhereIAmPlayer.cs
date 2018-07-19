@@ -1,19 +1,17 @@
-using Terraria.Localization;
+using Terraria.GameInput;
 using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
 
 namespace WhereIAm
 {
     public class WhereIAmPlayer : ModPlayer
     {
-        public override void OnEnterWorld(Player player)
+        public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            if (WhereIAm.hasLeveled)
+            if (WhereIAm.openUI.JustPressed)
             {
-                string check = Language.GetTextValue("Mods.WhereIAm.check");
-                Main.NewText(check, Color.Cyan);
+                FunctionCheck.visible = !FunctionCheck.visible;
             }
         }
+
     }
 }

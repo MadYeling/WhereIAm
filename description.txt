@@ -2,15 +2,28 @@
 	This mod shows the biome you are in, current time(day or night), player position (Take the top left corner of the map as the original point) and FPS
 	Does not support mod biome temporarily
 
-	Future update: Add a UI allows players to open or close certain displays freely.
+	[c/ff0000:NOTICE!]
+	Because of some unknown bugs, I can't translate the Hotkey and the UI. It will take a crash
+
+	The Hotkey means "Function Toggles"
+	Four options in the UI are
+	"Display Biome"
+	"Display Time"
+	"Display Position"
+	"Display FPS"
+
 
 	这个模组可以告诉你所处的环境, 当前时间(白天,晚上), 人物坐标 (以地图左上角为原点) 以及游戏帧数
+	可在游戏中调出UI关闭某些不想要的效果
 	暂时不支持模组环境
 
-	未来更新期望: 添加一个UI,玩家可自由开启或关闭某些显示
 
 
 	更新日志:
+
+	v0.6
+	-Add a UI allows players to open or close certain displays freely (Needs to set the button by yourself).
+	-添加一个UI,玩家可自由开启或关闭某些显示 (需要自行设置按键)
 
 	v0.5
 	-build for tmodloader 0.10.1.5

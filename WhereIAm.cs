@@ -13,8 +13,8 @@ namespace WhereIAm
         public static bool hasLeveled = false;
         private string biome = "UNKNOWN ERR";
         private string time = "UNKNOWN ERR";
-        private string position = "X: " + Main.player[Main.myPlayer].position.X + " Y: " + Main.player[Main.myPlayer].position.Y;
-        private string fps = "FPS:" + Main.frameRate;
+        private string position = "UNKNOWN ERR";
+        private string fps = "UNKNOWN ERR";
 
         public override void Load()
         {
@@ -34,6 +34,7 @@ namespace WhereIAm
                 {
                     biome = CheckBiome();
                     time = CheckTime();
+                    position = "X: " + Main.player[Main.myPlayer].position.X + " Y: " + Main.player[Main.myPlayer].position.Y;
 
                     Utils.DrawBorderString(Main.spriteBatch, biome, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(biome).X * 0.75f) - 2, 30), Color.White, 1.5f);
                     Utils.DrawBorderString(Main.spriteBatch, time, new Vector2(Main.screenWidth / 2 - (int)(Main.fontMouseText.MeasureString(time).X * 0.75f) - 2, 60), Color.White, 1.5f);
@@ -48,6 +49,7 @@ namespace WhereIAm
             }
             if (!Main.gameMenu && Main.player[Main.myPlayer].active)
             {
+                fps = "FPS:" + Main.frameRate;
                 Utils.DrawBorderString(Main.spriteBatch, fps, new Vector2(20, Main.screenHeight - 30), Color.White, 1.5f);
             }
         }

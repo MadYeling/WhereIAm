@@ -12,6 +12,14 @@
 
 	更新日志:
 
+	v0.5
+	-build for tmodloader 0.10.1.5
+	-使用 tmodloader 0.10.1.5 生成模组
+
+	v0.4
+	-Add an icon
+	-添加图标
+
 	v0.3
 	-Add FPS at the lower left corner
 	-在游戏左下角添加帧数

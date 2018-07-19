@@ -1,5 +1,5 @@
 author = 叶凌
-version = 0.3
+version = 0.5
 displayName = Where I Am
 homepage = https://github.com/MadYeling/WhereIAm
 hideCode = false
